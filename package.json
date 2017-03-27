@@ -1,0 +1,18 @@
+{
+    "name": "vuejs-pagination",
+    "description": "Vue.js pagination component",
+    "version": "0.1.0",
+    "keywords": [
+        "pagination",
+        "vue"
+    ],
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Braised-Cakes/vue-pagination"
+    },
+    "dependencies": {
+        "vue": "2.1.0"
+    },
+    "licenses": "MIT"
+}
