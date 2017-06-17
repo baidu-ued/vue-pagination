@@ -1,6 +1,15 @@
 # Vue Pagination
 
+vue分页组件, 同时支持数据缓存
+
 [Vue.js](http://vuejs.org/) (基于 2.1.0)
+
+##demo
+
+详情请看example
+
+![](./images/UYt8PdN54m.gif)
+
 
 ## 安装
 
@@ -8,14 +17,15 @@
 npm install vuejs-pagination --save-dev
 ```
 
-## 例子
+## 基本用法
 
 ```html
 <body id="app">
-    <ul class="list">
-        <li class="item" v-for="item in items">{{item.name}}</li>
-    </ul>
-    <pagination :page-length="pageLength" :actived-page="activePage" :page-size="7" v-on:change="change"></pagination>
+    <pagination
+        :page-num="pageNum"            //总页码， 必须
+        :actived-page="activePage"    //当前页， 必须
+        v-on:change="change">        //触发事件, 必须
+    </pagination>
 </body>
 ```
 
@@ -25,28 +35,77 @@ new Vue({
     el: '#app',
     data:function() {
         return{
-            pageLength : 20,
-            activePage : 1
+            pageNum : 1, //总页数， 默认1
+            activePage : 1 //当前页， 默认1
         }
     },
+    mounted : function(){
+        this.getData();
+    },
     methods:{
+        getData : function(){
+            $.ajax({
+                url : 'xxx',
+                data  :{
+                    activePage : this.activePage
+                },
+                success : function(rs){
+                    this.pageNum = rs.pageNum;
+                }
+            })
+        },
         change:function(value){
-            this.activePage = value;    //必须改变activePage
+            this.activePage = value;    //
+            this.getData();
         }
     }
 })
 ```
 
-### Props
+## 高级用法
 
-Name       | Type          | Default | min | Required | Description
-:--------- | :------------ | :------ | :-- | :------- | :-------------------
-pageLength | Number        |         | 1   | true     | 总页码长度
-activePage | Number        |         | 1   | true     | 当前页码，当监听到页码变化后，需改变该值
-pageSize   | String,Number | 5       | 3   |          | 显示区域长度
+缓存功能
 
-### 自定义事件
+```html
+<pagination
+    :types="types"                 //该接口类型
+    :cache-list="list"             //需要缓存的内容
+    :page-num="pageNum"            //总页码
+    :active-page="activePage"     //当前页
+    v-on:change="change">        //页码变化触发事件
+</pagination>
+```
 
-Name   | Type     | arguments | Required | Description
-:----- | :------- | :-------- | :------- | :--------------------
-change | funciton | value     | true     | 通过v-on:change监听分页器的变化
+```javascript
+//翻页后请求接口前， 先获取缓存数据， 如果没有， 再调用接口
+this.$nextTick(() => {
+    const cache = this.$refs.page.getCache();
+    if (cache) {
+        this.musicList = cache;
+        return;
+    }
+    $.ajax({
+        url : 'xxx'
+    })
+}
+```
+
+# Options
+
+Name                | Default                  | Required | Description
+:------------------ | :----------------------- | :------- | :-----------
+pageNum             | 1                        | true     | 总页码
+activePage          | 1                        | true     | 当前页
+pageSize            | 5                        | false    | 显示几页
+cacheList           |                          | false    | 需要缓存的数据
+types               |                          | false    | 需要缓存数据的类型
+wrapperClass        | vue-pagination-container | false    | 根元素的class
+prevItemClass       | vue-pagination-prev      | false    | 上一页按钮的class
+vue-pagination-next | vue-pagination-next      | false    | 下一页按钮的class
+pageItemClass       | vue-pagination-item      | false    | 页码item的class
+
+# Emit
+
+Name   | Params          | Required | Description
+:----- | :-------------- | :------- | :-------------
+change | newIndex(点击的哪页) | true     | 当点击其他页时，会触发该方法

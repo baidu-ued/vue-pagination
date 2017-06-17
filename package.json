@@ -1,7 +1,7 @@
 {
     "name": "vuejs-pagination",
-    "description": "Vue.js pagination component",
-    "version": "0.1.0",
+    "description": "vue分页组件",
+    "version": "1.0.0",
     "keywords": [
         "pagination",
         "vue"
