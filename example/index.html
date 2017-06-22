@@ -234,6 +234,7 @@ var vm = new Vue({
                         category: this.category.list[this.category.index].category
                     },
                     success: (rs) => {
+                        console.log(rs)
                         //为了看清缓存数据与没有缓存的区别， 特地延迟200ms后重置数据列表
                         setTimeout(() => {
                             this.musicList = rs.list;

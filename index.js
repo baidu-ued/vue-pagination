@@ -1,3 +1,10 @@
+/*
+    是一个数组,
+    极致优化， 
+
+    每一个feed都是一个数组
+
+*/
 (function(global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() : typeof define === 'function' && define.amd ? define(factory) : (global.VuePagination = factory());
 }(this, (function() {
@@ -18,6 +25,9 @@
 				<a @click="_select(pageNum)" href="javascript:void(0);">确定</a>
 			</div>
 		</div>`,
+
+
+
         props: {
             wrapperClass: {
                 type: String,
@@ -93,6 +103,7 @@
                 if (!this.cache[this.types]) {
                     this.cache[this.types] = {};
                 }
+                //先假设1页10个数据
                 this.cache[this.types][this.activePage] = this.cacheList;
             }
         },
