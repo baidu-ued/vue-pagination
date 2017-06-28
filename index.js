@@ -22,12 +22,9 @@
 				<span>到</span>
 				<input class="vue-pagination-ipt" type='text' :value="activePage">
 				<span>页</span>
-				<a @click="_select(pageNum)" href="javascript:void(0);">确定</a>
+				<a @click="_select()" href="javascript:void(0);">确定</a>
 			</div>
 		</div>`,
-
-
-
         props: {
             wrapperClass: {
                 type: String,
@@ -108,9 +105,17 @@
             }
         },
         methods: {
-            _select: function(value) {
-                var a = document.querySelector('.' + this.wrapperClass + ' .vue-pagination-ipt').value;
-                this.$emit('change', parseInt(a));
+            _select: function() {
+
+                var val = document.querySelector('.' + this.wrapperClass + ' .vue-pagination-ipt').value;
+                
+                if(val >= 1 && val <= this.pageNum){
+                
+                    this.$emit('change', parseInt(val));
+                }else{
+                
+                    this.$emit('change', 1);
+                }
             },
             select: function(index) {
                 if (index != this.activePage && index >= 1 && index <= this.pageNum) {
