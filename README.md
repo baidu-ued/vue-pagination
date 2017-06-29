@@ -6,9 +6,7 @@ vue分页组件, 同时支持数据缓存
 
 ## demo
 
-详情请看example
-
-![](./images/UYt8PdN54m.gif)
+![](./src/images/UYt8PdN54m.gif)
 
 ## 安装
 
@@ -58,18 +56,18 @@ new Vue({
 ```javascript
 //翻页后请求接口前， 先获取缓存数据， 如果没有， 再调用接口
 methods: {
-	change : function(){
-		this.$nextTick(() => {
-		    const cache = this.$refs.page.getCache();
-		    if (cache) {
-		        this.list = cache;
-		        return;
-		    }
-		    $.ajax({
-		        url : 'xxx'
-		    })
-		}
-	}
+    change : function(){
+        this.$nextTick(() => {
+            const cache = this.$refs.page.getCache();
+            if (cache) {
+                this.list = cache;
+                return;
+            }
+            $.ajax({
+                url : 'xxx'
+            })
+        }
+    }
 }
 ```
 
@@ -77,14 +75,14 @@ methods: {
 
 Name        | Default | Required | Description
 :---------- | :------ | :------- | :----------
-pageNum     | 1       | true     | 总页码
-currentPage | 1       | true     | 当前页
-pageSize    | 5       | false    | 显示几个页码，需大于3
-cacheList   |         | false    | 需要缓存的数据
+page-num     | 1       | true     | 总页码
+current-page | 1       | true     | 当前页
+page-size    | 5       | false    | 显示几个页码，需大于3
+cache-list   |         | false    | 需要缓存的数据
 types       |         | false    | 需要缓存数据的类型
 
 # Emit
 
-Name   | Params          | Required | Description
-:----- | :-------------- | :------- | :-------------
+Name   | Params     | Required | Description
+:----- | :--------- | :------- | :-------------
 change | val(点击的哪页) | true     | 当点击其他页时，会触发该方法
