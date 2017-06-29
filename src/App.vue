@@ -1,18 +1,11 @@
-<!DOCTYPE>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <title>Examples</title>
-    <link rel="stylesheet" type="text/css" href="../css/reset.css">
-</head>
 <style>
 body {
     display: flex;
     justify-content: center;
-    /*align-items: center;*/
 }
-
+.content{
+	height: 360px;
+}
 .category-list {
     display: flex;
     width: 500px;
@@ -42,7 +35,7 @@ body {
 }
 
 .loading {
-    padding-top: 160px;
+    padding-top: 100px;
     width: 100%;
     height: 100%;
     display: flex;
@@ -61,103 +54,13 @@ body {
     font-size: 14px;
     font-weight: bold;
 }
-
-.vue-pagination-item {
-    float: left;
-}
-
-.vue-pagination-container {
-    display: flex;
-    align-items: center;
-}
-
-.vue-pagination-container ul {
-    display: flex;
-}
-
-.vue-pagination-item {
-    min-width: 34px;
-    line-height: 34px;
-    height: 34px;
-    background: #fff;
-    text-align: center;
-    font-size: 12px;
-    color: #76838f;
-    padding: 0;
-    border: 1px solid #ccd5db;
-    margin: 5px;
-    border-radius: 4px;
-}
-
-.vue-pagination-item a {
-    display: block;
-    width: 100%;
-    height: 100%;
-    color: #76838f;
-}
-
-.vue-pagination-item:hover {
-    background: #f7f7f7;
-}
-
-.vue-pagination-item.active {
-    background: #08a1ef;
-    border-color: #08a1ef;
-}
-
-.vue-pagination-item.active a {
-    color: #fff;
-}
-
-.vue-pagination-prev,
-.vue-pagination-next {
-    font-size: 24px;
-}
-
-.vue-pagination-item.disabled a {
-    color: #dddddd;
-}
-
-.select-page {
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-}
-
-.select-page input {
-    border-radius: 4px;
-    font-size: 12px;
-}
-
-.select-page span {
-    color: #76838f;
-}
-
-.select-page .vue-pagination-ipt {
-    width: 34px;
-    height: 34px;
-    text-align: center;
-    margin: 0 5px;
-}
-
-.select-page a {
-    font-size: 12px;
-    color: #76838f;
-    width: 34px;
-    line-height: 34px;
-    text-align: center;
-    outline: none;
-    border: 1px solid #ccd5db;
-    background: #fff;
-    display: block;
-    margin-left: 5px;
-    border-radius: 4px;
-}
 </style>
 
-<body>
-    <div id='app'>
-        <!--    不同的音乐类型     -->
+<template>
+
+<div id="app">
+	<!--    不同的音乐类型     -->
+	<div class="content">
         <ul class="category-list">
             <li @click="changeCategory(index)" :class="{active : index == category.index}" v-for="(i, index) in category.list">{{i.name}}</li>
         </ul>
@@ -167,26 +70,28 @@ body {
         </ul>
         <!--    loading，  加载时出现     -->
         <div class="loading" v-if="loadStatus == 'none'">
-            <img src="../images/loading.gif" />
+            <img src="./images/loading.gif" />
             <p>加载中，请稍后</p>
         </div>
-        <!--    分页器     -->
-        <pagination ref="page" :cache-list="musicList" :types="category.list[category.index].name" :page-num="pageNum" :active-page="activePage" v-on:change="change"></pagination>
-    </div>
-</body>
-<script src="../library/vue.js"></script>
-<script src="../library/jquery.min.js"></script>
-<script src="../index.js"></script>
+	</div>
+    <Page ref="page" :cache-list="musicList" :types="category.list[category.index].name" :page-num="pageNum" :current-page="currentPage" @change="change"></Page>
+</div>
+
+</template>
+
 <script>
-var vm = new Vue({
-    el: '#app',
+import './css/reset.css'
+import $ from 'jQuery'
+import Page from './components/Page'
+
+export default {
+    name: 'app',
     components: {
-        'pagination': VuePagination
+        Page
     },
     data() {
         return {
-
-            category: { //音乐类型
+			category: { //音乐类型
                 index: 0,       //当前选择的类型索引
                 list: [{
                     name: '安静',
@@ -201,12 +106,11 @@ var vm = new Vue({
             },
             musicList: [], //音乐数据列表
             pageNum: 1, //总页码
-            activePage: 1, //当前页
+            currentPage: 1, //当前页
             loadStatus: 'none' // none 请求前  success 请求成功
-
         }
     },
-    mounted() {
+	mounted() {
         //页面初始化后， 第一次请求数据
         this.getData();
     },
@@ -214,7 +118,7 @@ var vm = new Vue({
         //当切换音乐类型时， 页码重置为第一页， 并获取新数据
         changeCategory(index) {
             this.category.index = index;
-            this.activePage = 1;
+            this.currentPage = 1;
             this.getData();
         },
         //获取数据的方法
@@ -230,7 +134,7 @@ var vm = new Vue({
                 $.ajax({
                     url: 'http://store.eqxiu.com/api/product/cat/listProdByCate?attrGroupId=3&pageSize=10',
                     data: {
-                        pageNo: this.activePage,      
+                        pageNo: this.currentPage,
                         category: this.category.list[this.category.index].category
                     },
                     success: (rs) => {
@@ -245,13 +149,12 @@ var vm = new Vue({
                 })
             });
         },
-        //当点击其他页时， 会触发该方法，  设置activePage为 点击的页码
+        //当点击其他页时， 会触发该方法，  设置currentPage为 点击的页码
         change(index) {
-            this.activePage = index;
+            this.currentPage = index;
             this.getData();
         }
     }
-})
-</script>
+}
 
-</html>
+</script>
