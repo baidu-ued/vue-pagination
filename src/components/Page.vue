@@ -110,7 +110,7 @@
             <a @click="select(pageNum)" href="javascript:void(0);">尾页</a>
         </li>
     </ul>
-    <div v-if="hasGoBtn" class="v-select-page">
+    <div v-if="goBtn" class="v-select-page">
         <span>到</span>
         <input ref="input" class="v-pagination-ipt" type='text' :value="currentPage" @input="watchInput">
         <span>页</span>
@@ -149,7 +149,7 @@ export default {
             type: String,
             default: 'none'
         },
-		hasGoBtn : {
+		goBtn : {
 			type : Boolean,
 			default : true
 		}

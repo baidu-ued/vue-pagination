@@ -6,7 +6,7 @@ vue分页组件, 同时支持数据缓存
 
 ## demo
 
-![](./src/images/UYt8PdN54m.gif)
+![](https://raw.githubusercontent.com/Braised-Cakes/vue-pagination/master/src/images/UYt8PdN54m.gif)
 
 ## 安装
 
@@ -78,8 +78,10 @@ Name        | Default | Required | Description
 page-num     | 1       | true     | 总页码
 current-page | 1       | true     | 当前页
 page-size    | 5       | false    | 显示几个页码，需大于3
+go-btn       |  true       | false    | 是否展示跳页按钮
 cache-list   |         | false    | 需要缓存的数据
 types       |         | false    | 需要缓存数据的类型
+
 
 # Emit
 
